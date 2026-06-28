@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { auth, googleProvider } from '../config/firebase';
+import { signInWithPopup } from 'firebase/auth';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -7,56 +9,99 @@ export default function Login() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Call API here
     console.log('Login', { email, password });
   };
 
-  const handleGoogleLogin = () => {
-    // Redirect to backend google auth endpoint
-    window.location.href = 'http://localhost:3000/auth/google';
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const token = await result.user.getIdToken();
+      
+      const response = await fetch('https://api-pockie.bkuteam.site/auth/firebase/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ idToken: token }),
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Login successful', data);
+        alert('Google login success!');
+      } else {
+        alert('Google login failed at backend');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Google login failed');
+    }
   };
 
   return (
-    <div style={{ padding: '2rem', maxWidth: '400px', margin: '0 auto' }}>
-      <h1>Login to Pockie</h1>
-      
-      <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow">
         <div>
-          <label>Email</label>
-          <br/>
-          <input 
-            type="email" 
-            value={email} 
-            onChange={e => setEmail(e.target.value)} 
-            required 
-            style={{ width: '100%', padding: '0.5rem' }}
-          />
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Login to Pockie
+          </h2>
         </div>
-        
-        <div>
-          <label>Password</label>
-          <br/>
-          <input 
-            type="password" 
-            value={password} 
-            onChange={e => setPassword(e.target.value)} 
-            required 
-            style={{ width: '100%', padding: '0.5rem' }}
-          />
+        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div>
+              <input
+                type="email"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Email address"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+              />
+            </div>
+            <div>
+              <input
+                type="password"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="text-sm">
+              <Link to="/forgot-password" className="font-medium text-indigo-600 hover:text-indigo-500">
+                Forgot your password?
+              </Link>
+            </div>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Sign in
+            </button>
+          </div>
+        </form>
+
+        <div className="mt-6">
+          <button
+            onClick={handleGoogleLogin}
+            className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Sign in with Google
+          </button>
         </div>
-        
-        <button type="submit" style={{ padding: '0.5rem' }}>Login</button>
-      </form>
 
-      <div style={{ marginTop: '1rem', textAlign: 'center' }}>
-        <button onClick={handleGoogleLogin} style={{ padding: '0.5rem', width: '100%' }}>
-          Login with Google
-        </button>
-      </div>
-
-      <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'space-between' }}>
-        <Link to="/register">Create an account</Link>
-        <Link to="/forgot-password">Forgot password?</Link>
+        <div className="mt-6 text-center">
+          <Link to="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+            Create an account
+          </Link>
+        </div>
       </div>
     </div>
   );

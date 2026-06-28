@@ -1,67 +1,50 @@
 import { useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 export default function ResetPassword() {
+  const [password, setPassword] = useState('');
   const [searchParams] = useSearchParams();
-  const token = searchParams.get('token');
-
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleReset = (e: React.FormEvent) => {
     e.preventDefault();
-    if (newPassword !== confirmPassword) {
-      alert('Passwords do not match');
-      return;
-    }
-    // Call API here
-    console.log('Reset Password with token', token, 'and new password', newPassword);
-    alert('Password has been reset successfully!');
+    const token = searchParams.get('token');
+    console.log('Reset Password', { password, token });
+    alert('Password reset successful! Redirecting to login...');
+    navigate('/login');
   };
 
-  if (!token) {
-    return (
-      <div style={{ padding: '2rem', textAlign: 'center' }}>
-        <h2>Invalid or missing reset token.</h2>
-        <Link to="/forgot-password">Request a new reset link</Link>
-      </div>
-    );
-  }
-
   return (
-    <div style={{ padding: '2rem', maxWidth: '400px', margin: '0 auto' }}>
-      <h1>Reset Password</h1>
-      
-      <form onSubmit={handleReset} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow">
         <div>
-          <label>New Password</label>
-          <br/>
-          <input 
-            type="password" 
-            value={newPassword} 
-            onChange={e => setNewPassword(e.target.value)} 
-            required 
-            style={{ width: '100%', padding: '0.5rem' }}
-          />
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Set New Password
+          </h2>
         </div>
+        <form className="mt-8 space-y-6" onSubmit={handleReset}>
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div>
+              <input
+                type="password"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="New Password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+              />
+            </div>
+          </div>
 
-        <div>
-          <label>Confirm New Password</label>
-          <br/>
-          <input 
-            type="password" 
-            value={confirmPassword} 
-            onChange={e => setConfirmPassword(e.target.value)} 
-            required 
-            style={{ width: '100%', padding: '0.5rem' }}
-          />
-        </div>
-        
-        <button type="submit" style={{ padding: '0.5rem' }}>Update Password</button>
-      </form>
-
-      <div style={{ marginTop: '1rem', textAlign: 'center' }}>
-        <Link to="/login">Back to Login</Link>
+          <div>
+            <button
+              type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Reset Password
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
