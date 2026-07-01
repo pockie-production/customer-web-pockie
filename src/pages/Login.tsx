@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { auth, googleProvider } from '../config/firebase';
 import { signInWithPopup } from 'firebase/auth';
 import pockieLogo from '../assets/logo.png';
@@ -11,10 +11,13 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
+  const navigate = useNavigate();
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // Call API here
     console.log('Login', { email, password });
+    navigate('/dashboard');
   };
 
   const handleGoogleLogin = async () => {
@@ -33,7 +36,7 @@ export default function Login() {
       if (response.ok) {
         const data = await response.json();
         console.log('Login successful', data);
-        alert('Google login success!');
+        navigate('/dashboard');
       } else {
         alert('Google login failed at backend');
       }
