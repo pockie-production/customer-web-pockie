@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { LogOut, User, Shield, Mail } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import './SettingsPage.css';

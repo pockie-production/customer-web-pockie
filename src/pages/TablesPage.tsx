@@ -1,6 +1,6 @@
-import React from 'react';
+
 import {
-  LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
+  LineChart, Line, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import { Filter, Download } from 'lucide-react';
@@ -17,12 +17,7 @@ const lineData = [
   { name: 'Th8', revenue: 3490, reach: 4300 },
 ];
 
-const barData = [
-  { name: 'Tuần 1', ads: 400, organic: 240 },
-  { name: 'Tuần 2', ads: 300, organic: 139 },
-  { name: 'Tuần 3', ads: 200, organic: 980 },
-  { name: 'Tuần 4', ads: 278, organic: 390 },
-];
+
 
 const donutData = [
   { name: 'Facebook', value: 400 },
@@ -94,7 +89,7 @@ export default function TablesPage() {
                   dataKey="value"
                   stroke="none"
                 >
-                  {donutData.map((entry, index) => (
+                  {donutData.map((_, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
