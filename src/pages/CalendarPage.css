@@ -1,0 +1,199 @@
+/* CalendarPage.css */
+
+.calendar-page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation: fadeIn var(--transition-base);
+}
+
+/* --- Highlight Banner --- */
+.highlight-banner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: linear-gradient(135deg, var(--color-mint-light) 0%, var(--color-white) 100%);
+  border: 1px solid var(--color-mint-border);
+  padding: 24px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.highlight-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.text-yellow {
+  color: var(--color-yellow);
+  /* The Pockie yellow is quite light, maybe we need a darker yellow for icons/text if on white */
+  color: #D4B000; 
+}
+
+.text-mint {
+  color: var(--color-mint);
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.highlight-title {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+}
+
+.highlight-desc {
+  font-size: var(--text-md);
+  color: var(--color-text-secondary);
+}
+
+/* --- Calendar Card --- */
+.calendar-card {
+  background-color: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.calendar-month-title {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.calendar-nav-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-white);
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.nav-btn:hover {
+  background-color: var(--color-cream-dark);
+  border-color: var(--color-mint);
+  color: var(--color-mint);
+}
+
+/* --- Calendar Grid --- */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background-color: var(--color-border); /* Acts as border between cells */
+  gap: 1px; /* Creates the grid lines */
+}
+
+.weekday-header {
+  background-color: var(--color-cream-dark);
+  padding: 12px;
+  text-align: center;
+  font-weight: 600;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.calendar-cell {
+  background-color: var(--color-white);
+  min-height: 120px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  transition: background-color var(--transition-fast);
+}
+
+.calendar-cell:hover {
+  background-color: var(--color-cream);
+}
+
+.calendar-cell.empty {
+  background-color: var(--color-cream-dark);
+}
+
+.calendar-cell.today .day-number {
+  background-color: var(--color-mint);
+  color: var(--color-white);
+  font-weight: 700;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.day-number {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 8px;
+  align-self: flex-end;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.campaigns-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.campaign-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.campaign-badge:hover {
+  opacity: 0.8;
+}
+
+.campaign-badge.type-mint {
+  background-color: var(--color-mint);
+  color: var(--color-white);
+}
+
+.campaign-badge.type-yellow {
+  background-color: var(--color-yellow);
+  color: #8A7300; /* Darker text for yellow background */
+}
